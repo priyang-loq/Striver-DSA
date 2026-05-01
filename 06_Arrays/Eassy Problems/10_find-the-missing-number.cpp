@@ -2,24 +2,59 @@
 #include <vector>
 using namespace std;
 
-int missingNum(vector<int> &arr) {
+// function to find missing number
+int missingNum(vector<int> &arr)
+{
+    // total numbers should be size + 1
     int n = arr.size() + 1;
-  
-    // Calculate the sum of array elements
-    int sum = 0;
-    for (int i = 0; i < n - 1; i++) {
-        sum += arr[i];
+
+    // check from 1 to n
+    for (int i = 1; i <= n; i++)
+    {
+        bool found = false; // assume number not found
+
+        // search i in array
+        for (int j = 0; j < arr.size(); j++)
+        {
+            if (arr[j] == i)
+            {
+                found = true;
+                break;
+            }
+        }
+
+        // if not found, return missing number
+        if (found == false)
+        {
+            return i;
+        }
     }
 
-    // Calculate the expected sum
-    long long expSum = (n *1LL* (n + 1)) / 2;  
-
-    // Return the missing number
-    return expSum - sum;
+    return -1; // safety
 }
 
-int main() {
-    vector<int> arr = {8, 2, 4, 5, 3, 7, 1};  
-    cout << missingNum(arr);  
+int main()
+{
+    int n;
+
+    // input size (n-1 elements)
+    cout << "Enter size of array (n-1): ";
+    cin >> n;
+
+    vector<int> arr(n);
+
+    // input elements
+    cout << "Enter elements: ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    // function call
+    int ans = missingNum(arr);
+
+    // output result
+    cout << "Missing number is: " << ans;
+
     return 0;
 }
