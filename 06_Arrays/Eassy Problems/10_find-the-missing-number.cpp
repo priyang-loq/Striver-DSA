@@ -1,36 +1,19 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 // function to find missing number
 int missingNum(vector<int> &arr)
 {
-    // total numbers should be size + 1
     int n = arr.size() + 1;
-
-    // check from 1 to n
-    for (int i = 1; i <= n; i++)
+    long long  sum = 0;
+    
+    for (int i = 0 ; i < n-1; i++)
     {
-        bool found = false; // assume number not found
-
-        // search i in array
-        for (int j = 0; j < arr.size(); j++)
-        {
-            if (arr[j] == i)
-            {
-                found = true;
-                break;
-            }
-        }
-
-        // if not found, return missing number
-        if (found == false)
-        {
-            return i;
-        }
+        sum = sum + arr[i];
     }
+    long long expSum = (n *1LL* (n + 1)) / 2;  
+    return expSum - sum;
 
-    return -1; // safety
 }
 
 int main()
