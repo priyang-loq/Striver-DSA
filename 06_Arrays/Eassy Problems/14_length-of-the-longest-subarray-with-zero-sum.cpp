@@ -1,46 +1,71 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// compute length of the longest subarray with sum 0
-int solve(vector<int>& a) {
-    // store best length found so far
+/*
+    Function: solve
+    ----------------
+    Finds the length of the longest subarray
+    having sum equal to 0 using brute force approach.
+
+    Time Complexity  : O(n^3)
+    Space Complexity : O(1)
+*/
+
+int solve(vector<int> &a)
+{
+    int n = a.size();
+
+    // Stores maximum length of subarray with sum 0
     int maxLen = 0;
-    // map prefix sum -> first index seen
-    unordered_map<int, int> sumIndexMap;
-    // running prefix sum
-    int sum = 0;
 
-    // iterate through the array
-    for (int i = 0; i < (int)a.size(); i++) {
-        // update running sum
-        sum += a[i];
+    // Traverse all possible starting indexes
+    for (int startIndex = 0; startIndex < n; startIndex++)
+    {
+        // Traverse all possible ending indexes
+        for (int endIndex = startIndex; endIndex < n; endIndex++)
+        {
+            int currentSum = 0;
 
-        // if sum is zero, subarray [0..i] has zero sum
-        if (sum == 0) {
-            // update best length
-            maxLen = i + 1;
-        }
-        // if this sum seen before, subarray (prevIndex..i] has zero sum
-        else if (sumIndexMap.find(sum) != sumIndexMap.end()) {
-            // maximize length using previous index
-            maxLen = max(maxLen, i - sumIndexMap[sum]);
-        }
-        // first time seeing this sum, store its index
-        else {
-            sumIndexMap[sum] = i;
+            // Calculate sum of current subarray
+            for (int i = startIndex; i <= endIndex; i++)
+            {
+                currentSum += a[i];
+            }
+
+            // If sum becomes 0, update maximum length
+            if (currentSum == 0)
+            {
+                maxLen = max(maxLen, endIndex - startIndex + 1);
+            }
         }
     }
 
-    // return best length
     return maxLen;
 }
 
-// program entry
-int main() {
-    // sample input
-    vector<int> a = {9, -3, 3, -1, 6, -5};
-    // print result
-    cout << solve(a) << endl;
-    // exit
+int main()
+{
+    int n;
+
+    // Input size of array
+    cout << "Enter number of elements: ";
+    cin >> n;
+
+    vector<int> a(n);
+
+    // Input array elements
+    cout << "Enter array elements: ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a[i];
+    }
+
+    // Function call
+    int ans = solve(a);
+
+    // Output result
+    cout << "Length of longest subarray with sum 0: "
+         << ans << endl;
+
     return 0;
 }
