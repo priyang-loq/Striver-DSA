@@ -1,87 +1,87 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/*
-    Brute Force Approach
-    --------------------
-    Find the length of the longest subarray
-    whose sum is equal to k.
-
-    Time Complexity  : O(N^3)
-    Space Complexity : O(1)
-*/
-
-class Solution {
+class Solution
+{
 public:
-
-    // Function to find longest subarray length
-    int longestSubarray(vector<int>& nums, int k) {
-
+    // Function to find the length of the longest subarray with sum = k
+    int longestSubarray(vector<int> &nums, int k)
+    {
         // Size of array
         int n = nums.size();
 
-        // Stores maximum length found
-        int maxLength = 0;
+        // Left and right pointers for sliding window
+        int left = 0, right = 0;
 
-        // Select starting index
-        for (int startIndex = 0; startIndex < n; startIndex++) {
+        // Variable to store current window sum
+        int sum = nums[0];
 
-            // Select ending index
-            for (int endIndex = startIndex; endIndex < n; endIndex++) {
+        // Variable to store maximum length
+        int maxLen = 0;
 
-                // Calculate current subarray sum
-                int currentSum = 0;
+        // Traverse the array
+        while (right < n)
+        {
+            // Shrink the window if sum becomes greater than k
+            while (left <= right && sum > k)
+            {
+                sum -= nums[left];
+                left++;
+            }
 
-                for (int i = startIndex; i <= endIndex; i++) {
-                    currentSum += nums[i];
-                }
+            // If current sum equals k
+            if (sum == k)
+            {
+                // Update maximum length
+                maxLen = max(maxLen, right - left + 1);
+            }
 
-                // Check if subarray sum equals k
-                if (currentSum == k) {
+            // Move right pointer
+            right++;
 
-                    // Update maximum length
-                    maxLength = max(maxLength,
-                                    endIndex - startIndex + 1);
-                }
+            // Add next element into the window
+            if (right < n)
+            {
+                sum += nums[right];
             }
         }
 
-        // Return final answer
-        return maxLength;
+        // Return the answer
+        return maxLen;
     }
 };
 
-int main() {
-
+int main()
+{
+    // Taking size of array as input
     int n;
-
-    // Input array size
     cout << "Enter size of array: ";
     cin >> n;
 
-    // Declare vector
+    // Declaring vector
     vector<int> nums(n);
 
-    // Input array elements
+    // Taking array elements as input
     cout << "Enter array elements: ";
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         cin >> nums[i];
     }
 
-    // Input target sum
+    // Taking target sum as input
     int k;
-    cout << "Enter value of k: ";
+    cout << "Enter target sum: ";
     cin >> k;
 
-    // Create object of Solution class
-    Solution solution;
+    // Creating object of Solution class
+    Solution sol;
 
     // Function call
-    int result = solution.longestSubarray(nums, k);
+    int ans = sol.longestSubarray(nums, k);
 
-    // Print result
-    cout << "\nLength of longest subarray = "
-         << result << endl;
+    // Printing the result
+    cout << "Length of longest subarray having sum "
+         << k << " is: " << ans << endl;
 
     return 0;
 }
