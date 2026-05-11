@@ -3,51 +3,47 @@ using namespace std;
 
 class Solution {
 public:
-    // Function to check if any two numbers sum up to target (variant 1)
+    // Variant 1: Check if two numbers sum to target using hashing
     string twoSumExists(vector<int>& arr, int target) {
+        unordered_map<int, int> mp;  // Map to store element -> index
         int n = arr.size();
-        // Outer loop picks one element at a time
+        // Iterate over all elements
         for (int i = 0; i < n; i++) {
-            // Inner loop searches for another element that complements arr[i]
-            for (int j = i + 1; j < n; j++) {
-                // If sum equals target, return "YES"
-                if (arr[i] + arr[j] == target) {
-                    return "YES";
-                }
+            int complement = target - arr[i];  // Needed value to reach target sum
+            // Check if complement is already in map
+            if (mp.find(complement) != mp.end()) {
+                return "YES";  // Pair found
             }
+            // Store current element with its index for future reference
+            mp[arr[i]] = i;
         }
-        // No pair found that sums to target
+        // No pair found
         return "NO";
     }
 
-    // Function to return indices of two numbers that sum to target (variant 2)
+    // Variant 2: Return indices of two numbers that sum to target using hashing
     vector<int> twoSumIndices(vector<int>& arr, int target) {
+        unordered_map<int, int> mp;  // Map to store element -> index
         int n = arr.size();
-        // Outer loop picks one element at a time
         for (int i = 0; i < n; i++) {
-            // Inner loop searches for another element that complements arr[i]
-            for (int j = i + 1; j < n; j++) {
-                // If sum equals target, return the pair of indices
-                if (arr[i] + arr[j] == target) {
-                    return {i, j};
-                }
+            int complement = target - arr[i];
+            // If complement found, return indices
+            if (mp.find(complement) != mp.end()) {
+                return {mp[complement], i};
             }
+            // Store current element and index
+            mp[arr[i]] = i;
         }
-        // No such pair found
-        return {-1, -1};
+        return {-1, -1};  // No pair found
     }
 };
 
 int main() {
     Solution sol;
-
     vector<int> arr = {2, 6, 5, 8, 11};
     int target = 14;
 
-    // Variant 1
     cout << sol.twoSumExists(arr, target) << "\n";
-
-    // Variant 2
     vector<int> res = sol.twoSumIndices(arr, target);
     cout << "[" << res[0] << ", " << res[1] << "]\n";
 
