@@ -3,36 +3,52 @@ using namespace std;
 
 class Solution {
 public:
-    // Variant 1: Check if two numbers sum to target using hashing
-    string twoSumExists(vector<int>& arr, int target) {
-        unordered_map<int, int> mp;  // Map to store element -> index
+    // Variant 1: Check if two numbers sum to target using two-pointer approach
+    string twoSumExists(vector<int> arr, int target) {
         int n = arr.size();
-        // Iterate over all elements
+        // Create a vector of pairs to remember original indices after sorting
+        vector<pair<int, int>> numsWithIndex;
         for (int i = 0; i < n; i++) {
-            int complement = target - arr[i];  // Needed value to reach target sum
-            // Check if complement is already in map
-            if (mp.find(complement) != mp.end()) {
-                return "YES";  // Pair found
-            }
-            // Store current element with its index for future reference
-            mp[arr[i]] = i;
+            numsWithIndex.push_back({arr[i], i});
         }
-        // No pair found
-        return "NO";
+        // Sort based on the element values
+        sort(numsWithIndex.begin(), numsWithIndex.end());
+
+        int left = 0, right = n - 1;
+        // Loop until pointers cross
+        while (left < right) {
+            int sum = numsWithIndex[left].first + numsWithIndex[right].first;
+            if (sum == target) {
+                return "YES";  // Pair found
+            } else if (sum < target) {
+                left++;  // Need bigger sum, move left pointer right
+            } else {
+                right--; // Need smaller sum, move right pointer left
+            }
+        }
+        return "NO";  // No pair found
     }
 
-    // Variant 2: Return indices of two numbers that sum to target using hashing
-    vector<int> twoSumIndices(vector<int>& arr, int target) {
-        unordered_map<int, int> mp;  // Map to store element -> index
+    // Variant 2: Return original indices of two numbers that sum to target
+    vector<int> twoSumIndices(vector<int> arr, int target) {
         int n = arr.size();
+        vector<pair<int, int>> numsWithIndex;
         for (int i = 0; i < n; i++) {
-            int complement = target - arr[i];
-            // If complement found, return indices
-            if (mp.find(complement) != mp.end()) {
-                return {mp[complement], i};
+            numsWithIndex.push_back({arr[i], i});
+        }
+        sort(numsWithIndex.begin(), numsWithIndex.end());
+
+        int left = 0, right = n - 1;
+        while (left < right) {
+            int sum = numsWithIndex[left].first + numsWithIndex[right].first;
+            if (sum == target) {
+                // Return original indices
+                return {numsWithIndex[left].second, numsWithIndex[right].second};
+            } else if (sum < target) {
+                left++;
+            } else {
+                right--;
             }
-            // Store current element and index
-            mp[arr[i]] = i;
         }
         return {-1, -1};  // No pair found
     }
