@@ -1,37 +1,43 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-// Function to find the second smallest and second largest elements in the array
-void getElements(int arr[], int n)
-{
-    // Edge case when the array has less than 2 elements
-    if(n == 0 || n == 1)
-        cout << -1 << " " << -1 << endl;  // Print -1 for both second smallest and second largest if the array has less than 2 elements
-    
-    // Sort the array to easily find the second smallest and second largest elements
-    sort(arr, arr + n);
+class Solution {
+public:
+    // Function to sort array containing 0s, 1s, and 2s using Dutch National Flag Algorithm
+    void sortZeroOneTwo(vector<int>& nums) {
+        // Initialize three pointers: low, mid starting from 0, high from end of array
+        int low = 0, mid = 0, high = nums.size() - 1;
 
-    // Second smallest element is at index 1 after sorting
-    int small = arr[1]; 
+        // Process elements until mid pointer crosses high pointer
+        while (mid <= high) {
+            // If current element is 0, swap with low and move both pointers forward
+            if (nums[mid] == 0) {
+                swap(nums[mid], nums[low]);
+                mid++;
+                low++;
+            }
+            // If current element is 1, it's already in correct place → move mid forward
+            else if (nums[mid] == 1) {
+                mid++;
+            }
+            // If current element is 2, swap with high and move only high pointer backward
+            else {
+                swap(nums[mid], nums[high]);
+                high--;
+            }
+        }
+    }
+};
 
-    // Second largest element is at index n-2 after sorting
-    int large = arr[n - 2]; 
+// Driver code
+int main() {
+    Solution obj;
+    vector<int> nums = {2, 0, 2, 1, 1, 0};
 
-    // Output the second smallest and second largest elements
-    cout << "Second smallest is " << small << endl;
-    cout << "Second largest is " << large << endl;
-}
+    obj.sortZeroOneTwo(nums);
 
-int main()
-{
-    // Initialize the array with elements
-    int arr[] = {1, 2, 4, 6, 7, 5};
-    
-    // Calculate the size of the array
-    int n = sizeof(arr) / sizeof(arr[0]);
-    
-    // Call the function to find and print the second smallest and second largest elements
-    getElements(arr, n);
+    for (int val : nums)
+        cout << val << " ";
 
     return 0;
 }
