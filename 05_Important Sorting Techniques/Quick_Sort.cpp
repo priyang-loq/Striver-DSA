@@ -1,84 +1,78 @@
 /*
-    Quick Sort Implementation (Using First Element as Pivot)
+    Quick Sort Implementation (Lomuto Partition Scheme)
 
-    - Time Complexity:
-        Best/Average: O(n log n)
-        Worst: O(n^2)
+    Time Complexity:
+        Best Case    : O(n log n)
+        Average Case : O(n log n)
+        Worst Case   : O(n^2)
 
-    - Space Complexity:
-        O(log n) (recursion stack)
+    Space Complexity:
+        O(log n) (Recursion Stack)
 
-    - Approach:
-        Divide & Conquer
+    Approach:
+        - Divide and Conquer
+        - Uses the last element as the pivot.
+        - Partitions the array so that:
+            * Elements <= pivot are placed on the left.
+            * Elements > pivot are placed on the right.
+        - Recursively sorts both partitions.
 */
 
 #include <bits/stdc++.h>
 using namespace std;
 
 /*
-    Partition Function:
-    - Chooses first element as pivot
-    - Places pivot in its correct sorted position
-    - Elements smaller than pivot go left
-    - Elements greater go right
+    Function to partition the array using the last element as pivot.
+    Returns the correct index of the pivot after partitioning.
 */
 int partition(vector<int> &arr, int low, int high)
 {
-    int pivot = arr[low];  // Pivot element
-    int i = low;
-    int j = high;
+    int pivot = arr[high];
+    int index = low - 1;
 
-    while (i < j)
+    // Place all elements smaller than or equal to the pivot on the left
+    for (int j = low; j < high; j++)
     {
-        // Move i to the right until element > pivot
-        while (arr[i] <= pivot && i <= high - 1)
+        if (arr[j] <= pivot)
         {
-            i++;
-        }
-
-        // Move j to the left until element <= pivot
-        while (arr[j] > pivot && j >= low + 1)
-        {
-            j--;
-        }
-
-        // Swap elements if i < j
-        if (i < j)
-        {
-            swap(arr[i], arr[j]);
+            index++;
+            swap(arr[index], arr[j]);
         }
     }
 
-    // Place pivot at correct position
-    swap(arr[low], arr[j]);
+    // Place the pivot in its correct sorted position
+    index++;
+    swap(arr[index], arr[high]);
 
-    return j; // Return pivot index
+    return index;
 }
 
 /*
-    QuickSort Function:
-    Recursively sorts left and right partitions
+    Quick Sort Function
+
+    Recursively sorts:
+    1. Left partition
+    2. Right partition
 */
-void quicksort(vector<int> &arr, int low, int high)
+void quickSort(vector<int> &arr, int low, int high)
 {
-    // Base Case: single or no element
-    if (low >= high) return;
+    // Base Case
+    if (low >= high)
+        return;
 
     int pivotIndex = partition(arr, low, high);
 
-    // Sort left part
-    quicksort(arr, low, pivotIndex - 1);
+    // Sort left half
+    quickSort(arr, low, pivotIndex - 1);
 
-    // Sort right part
-    quicksort(arr, pivotIndex + 1, high);
+    // Sort right half
+    quickSort(arr, pivotIndex + 1, high);
 }
 
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
     int n;
+
     cout << "Enter number of elements: ";
     cin >> n;
 
@@ -90,16 +84,21 @@ int main()
         cin >> arr[i];
     }
 
-    cout << "\nUnsorted array:\n";
-    for (int x : arr)
-        cout << x << " ";
+    cout << "\nUnsorted Array:\n";
+    for (int i = 0; i < n; i++)
+    {
+        cout << arr[i] << " ";
+    }
 
-    quicksort(arr, 0, n - 1);
+    quickSort(arr, 0, n - 1);
 
-    cout << "\n\nSorted array:\n";
-    for (int x : arr)
-        cout << x << " ";
+    cout << "\n\nSorted Array:\n";
+    for (int i = 0; i < n; i++)
+    {
+        cout << arr[i] << " ";
+    }
 
-    cout << '\n';
+    cout << endl;
+
     return 0;
 }
