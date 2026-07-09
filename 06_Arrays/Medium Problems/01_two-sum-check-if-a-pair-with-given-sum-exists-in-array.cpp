@@ -1,67 +1,60 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
-public:
-    // Variant 1: Check if two numbers sum to target using two-pointer approach
-    string twoSumExists(vector<int> arr, int target) {
-        int n = arr.size();
-        // Create a vector of pairs to remember original indices after sorting
-        vector<pair<int, int>> numsWithIndex;
-        for (int i = 0; i < n; i++) {
-            numsWithIndex.push_back({arr[i], i});
-        }
-        // Sort based on the element values
-        sort(numsWithIndex.begin(), numsWithIndex.end());
+// Function to return indices of two numbers whose sum equals target
+vector<int> twoSum(vector<int>& arr, int target) {
 
-        int left = 0, right = n - 1;
-        // Loop until pointers cross
-        while (left < right) {
-            int sum = numsWithIndex[left].first + numsWithIndex[right].first;
-            if (sum == target) {
-                return "YES";  // Pair found
-            } else if (sum < target) {
-                left++;  // Need bigger sum, move left pointer right
-            } else {
-                right--; // Need smaller sum, move right pointer left
-            }
+    // Hash map to store:
+    // Key   -> Array element
+    // Value -> Index of that element
+    unordered_map<int, int> mp;
+
+    // Traverse the array
+    for (int i = 0; i < arr.size(); i++) {
+
+        // Find the required complement
+        int complement = target - arr[i];
+
+        // If complement exists, return the indices
+        if (mp.find(complement) != mp.end()) {
+            return {mp[complement], i};
         }
-        return "NO";  // No pair found
+
+        // Store the current element and its index
+        // after checking to avoid using the same element twice
+        mp[arr[i]] = i;
     }
 
-    // Variant 2: Return original indices of two numbers that sum to target
-    vector<int> twoSumIndices(vector<int> arr, int target) {
-        int n = arr.size();
-        vector<pair<int, int>> numsWithIndex;
-        for (int i = 0; i < n; i++) {
-            numsWithIndex.push_back({arr[i], i});
-        }
-        sort(numsWithIndex.begin(), numsWithIndex.end());
-
-        int left = 0, right = n - 1;
-        while (left < right) {
-            int sum = numsWithIndex[left].first + numsWithIndex[right].first;
-            if (sum == target) {
-                // Return original indices
-                return {numsWithIndex[left].second, numsWithIndex[right].second};
-            } else if (sum < target) {
-                left++;
-            } else {
-                right--;
-            }
-        }
-        return {-1, -1};  // No pair found
-    }
-};
+    // No valid pair found
+    return {-1, -1};
+}
 
 int main() {
-    Solution sol;
-    vector<int> arr = {2, 6, 5, 8, 11};
-    int target = 14;
 
-    cout << sol.twoSumExists(arr, target) << "\n";
-    vector<int> res = sol.twoSumIndices(arr, target);
-    cout << "[" << res[0] << ", " << res[1] << "]\n";
+    int n;
+    cout << "Enter the size of the array: ";
+    cin >> n;
+
+    vector<int> arr(n);
+
+    cout << "Enter the array elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    int target;
+    cout << "Enter the target sum: ";
+    cin >> target;
+
+    vector<int> ans = twoSum(arr, target);
+
+    if (ans[0] == -1) {
+        cout << "No valid pair found." << endl;
+    } else {
+        cout << "Indices: [" << ans[0] << ", " << ans[1] << "]" << endl;
+        cout << "Elements: " << arr[ans[0]] << " + " << arr[ans[1]]
+             << " = " << target << endl;
+    }
 
     return 0;
 }
