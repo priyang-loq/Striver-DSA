@@ -1,3 +1,4 @@
+// This is Better Approach
 #include <bits/stdc++.h>
 using namespace std;
 
