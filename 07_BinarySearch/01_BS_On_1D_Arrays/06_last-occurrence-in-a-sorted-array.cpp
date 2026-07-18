@@ -1,17 +1,24 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// find last index of key by scanning from right
+
 int solve(int n, int key, vector<int>& v) {
   // initialize result as not found
   int res = -1;
-  // scan from the end toward the start
-  for (int i = n - 1; i >= 0; i--) {
-    // update and stop when match found
-    if (v[i] == key) {
-      res = i;
-      break;
+  int low = 0, high = n-1;
+  while(low<=high)
+  {
+    int mid = low+(high-low)/2;
+    if(v[mid] == key)
+    {
+        res = mid;
+        low = mid+1;
     }
+    else if(v[mid] > key)
+    {
+        high = mid-1;
+    }
+    else low = mid+1;
   }
   // return index or -1
   return res;
