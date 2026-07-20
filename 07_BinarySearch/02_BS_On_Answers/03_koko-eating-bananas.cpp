@@ -1,35 +1,46 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    int minimumRateToEatBananas(vector<int>& a, int h) {
+    int minimumRateToEatBananas(vector<int> &a, int h)
+    {
 
         int maxi = *max_element(a.begin(), a.end());
+        int left = 1, right = maxi;
 
-        // Try every possible eating speed
-        for (int k = 1; k <= maxi; k++) {
+        int ans = -1;
 
+        while (left <= right)
+        {
+            int mid = left + (right - left) / 2;
             int totalHours = 0;
 
-            // Calculate total hours required at speed k
-            for (int i = 0; i < a.size(); i++) {
-                totalHours += (a[i] + k - 1) / k;
+            for (int i = 0; i < a.size(); i++)
+            {
+                totalHours += (a[i] + mid - 1) / mid;
             }
 
-            // If Koko can finish within h hours
-            if (totalHours <= h) {
-                return k;
+            if (totalHours <= h)
+            {
+                ans = mid;       // Store current answer
+                right = mid - 1; // Try to find a smaller speed
+            }
+            else
+            {
+                left = mid + 1;
             }
         }
 
-        return -1; // Should never reach here
+        return ans;
     }
 };
 
-int main() {
-    vector<int> a = {7, 15, 6, 3};
-    int h = 8;
+int main()
+{
+    vector<int> a = {25, 12, 8, 14, 19};
+    int h = 5;
 
     Solution obj;
     cout << obj.minimumRateToEatBananas(a, h);
