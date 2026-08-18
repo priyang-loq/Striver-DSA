@@ -56,7 +56,8 @@ int main()
     vector<int> arr = {25, 46, 28, 49, 24};
     int n = 5;
     int m = 4;
-    int ans = findPages(arr, n, m);
+    Solution sol;
+    int ans = sol.findPages(arr, n, m);
     cout << "The answer is: " << ans << "\n";
     return 0;
 }
