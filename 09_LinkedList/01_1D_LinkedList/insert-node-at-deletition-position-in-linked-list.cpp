@@ -78,12 +78,43 @@ Node* deletekpostion(Node *head,int pos)
     return head;
 }
 
+Node* deleteBeforeElement(Node *head,int element)
+{
+    if(head == NULL) return head;
+    if(head -> data == element)
+    {
+        Node* temp = head;
+        head = head -> next;
+        delete temp;
+        return head;
+    }
+
+    Node* temp = head;
+    Node* prev = NULL;
+
+    while(temp != NULL)
+    {
+
+        if(temp -> data == element)
+        {
+            prev -> next = temp -> next;
+            delete temp;
+            break;
+        }
+        prev = temp;
+        temp = temp -> next;
+    }
+    return head;
+}
+
 int main(){
     vector<int> arr = {2,3,4,5,6,7};
 
     Node* head = conArrayLL(arr);
     traverse(head);
     deletekpostion(head,3);
+    traverse(head);
+    deleteBeforeElement(head,7);
     traverse(head);
 
 
