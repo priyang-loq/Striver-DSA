@@ -143,6 +143,14 @@ void deleteNode(Node *temp)
     free(temp);
 }
 
+Node* insertBeforeHead(Node* head,int val)
+{
+    Node* newNode = new Node(val,head,NULL);
+    head -> back = newNode;
+
+    return newNode;
+}
+
 int main()
 {
     vector<int> arr = {2, 3, 4, 5, 6};
@@ -150,7 +158,9 @@ int main()
     Node *head = conArray2DLL(arr);
     // head = deleteHead(head);
     // head = removeKthElement(head,2);
-    deleteNode(head->next);
+    // deleteNode(head->next);
+
+    head = insertBeforeHead(head,1);
     traverse(head);
 
     return 0;
