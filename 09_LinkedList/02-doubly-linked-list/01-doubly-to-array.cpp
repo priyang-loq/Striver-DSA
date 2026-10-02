@@ -39,7 +39,7 @@ Node* conArray2DLL(vector<int> &arr)
     return head;
 }
 
-Node* traverse(Node* head)
+void traverse(Node* head)
 {
     Node* temp = head;
     while(temp)
@@ -49,10 +49,26 @@ Node* traverse(Node* head)
     }
 }
 
+Node* deleteHead(Node* head)
+{
+    if(head == NULL || head -> next == NULL)
+    {
+        return head;
+    }
+
+    Node* prev = head;
+    head = head -> next;
+    head -> back = NULL;
+    prev -> next = NULL;
+    delete prev;
+    return head;
+}
+
 int main(){
     vector<int> arr = {2,3,4,5,6};
 
     Node* head = conArray2DLL(arr);
+    head = deleteHead(head);
     traverse(head);
 
 
