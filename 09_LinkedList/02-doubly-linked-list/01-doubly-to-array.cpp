@@ -143,12 +143,35 @@ void deleteNode(Node *temp)
     free(temp);
 }
 
-Node* insertBeforeHead(Node* head,int val)
+Node *insertBeforeHead(Node *head, int val)
 {
-    Node* newNode = new Node(val,head,NULL);
-    head -> back = newNode;
+    Node *newNode = new Node(val, head, NULL);
+    head->back = newNode;
 
     return newNode;
+}
+
+Node *insertBeforeTail(Node *head, int val)
+{
+    if (head->next == NULL)
+    {
+        return insertBeforeHead(head, val);
+    }
+
+    Node *tail = head;
+    while (tail->next != NULL)
+    {
+        tail = tail->next;
+    }
+
+    Node *prev = tail->back;
+
+    Node *newNode = new Node(val, tail, prev);
+
+    prev->next = newNode;
+    tail->back = newNode;
+
+    return head;
 }
 
 int main()
@@ -160,7 +183,7 @@ int main()
     // head = removeKthElement(head,2);
     // deleteNode(head->next);
 
-    head = insertBeforeHead(head,1);
+    head = insertBeforeTail(head, 1);
     traverse(head);
 
     return 0;
