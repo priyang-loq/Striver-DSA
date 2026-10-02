@@ -125,32 +125,13 @@ Node *removeKthElement(Node *head, int k)
     return head;
 }
 
-void deleteNode(Node *temp)
-{
-    Node *prev = temp->back;
-    Node *front = temp->next;
-
-    if (front == NULL)
-    {
-        prev->next = NULL;
-        temp->back = NULL;
-        return;
-    }
-
-    prev->next = front;
-    front->back = prev;
-    temp->back = temp->next = NULL;
-    free(temp);
-}
-
 int main()
 {
     vector<int> arr = {2, 3, 4, 5, 6};
 
     Node *head = conArray2DLL(arr);
     // head = deleteHead(head);
-    // head = removeKthElement(head,2);
-    deleteNode(head->next);
+    head = removeKthElement(head,2);
     traverse(head);
 
     return 0;
