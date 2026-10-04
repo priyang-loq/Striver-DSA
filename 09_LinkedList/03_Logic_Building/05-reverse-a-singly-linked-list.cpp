@@ -15,26 +15,20 @@ struct ListNode
 class Solution
 {
 public:
-    // Function to reverse linked list values using a stack.
+    // Function to reverse a linked list by changing links.
     ListNode *reverseList(ListNode *head)
     {
-        stack<int> values;
+        ListNode *prev = nullptr;
         ListNode *current = head;
-        // Store all node values in LIFO order.
+        // Traverse nodes and reverse one link per step.
         while (current != nullptr)
         {
-            values.push(current->val);
-            current = current->next;
+            ListNode *front = current->next;
+            current->next = prev;
+            prev = current;
+            current = front;
         }
-        current = head;
-        // Replace node values using stack top values.
-        while (current != nullptr)
-        {
-            current->val = values.top();
-            values.pop();
-            current = current->next;
-        }
-        return head;
+        return prev;
     }
 };
 
